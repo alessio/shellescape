@@ -11,25 +11,42 @@ be appended to/used in the context of shell programs' command line arguments.
 This work was inspired by the Python original package [shellescape] 
 (https://pypi.python.org/pypi/shellescape).
 
-## Example
+## Usage
+
+The following snippet shows a typical unsafe idiom:
 
 ```go
 package main
 
 import (
-        "github.com/alessio/shellescape"
-        "fmt"
+	"fmt"
+	"os"
 )
 
 func main() {
-        filename := "somefile; rm -rf ~"
-        fmt.Printf("ls -l %s\n", shellescape.Quote(filename))
+	fmt.Printf("ls -l %s\n", os.Args[1])
 }
 ```
+_[See in Go Playground](https://play.golang.org/p/Wj2WoUfH_d)_
 
-Run it:
+Especially when creating pipeline of commands which might end up being
+executed by a shell interpreter, tt is particularly unsafe to not
+escape arguments.
 
-```shell
-$ go run bin/program.go
-ls -l 'somefile; rm -rf ~'
+`shellescape.Quote()` comes in handy and to safely escape strings:
+
+```go
+package main
+
+import (
+        "fmt"
+        "os"
+
+        "github.com/alessio/shellescape"
+)
+
+func main() {
+        fmt.Printf("ls -l %s\n", shellescape.Quote(os.Args[1]))
+}
 ```
+_[See in Go Playground](https://play.golang.org/p/HJ_CXgSrmp)_
