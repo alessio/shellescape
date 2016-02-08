@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func ExampleUnsageArgs(filename string) {
+func ExampleUnsageArgs() {
 	filename := "myfile; rm -rf /"
 	prog := "/bin/ls"
 	unescaped_command := strings.Join([]string{prog, filename}, " ")
