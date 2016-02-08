@@ -1,6 +1,5 @@
-# shellescape
+# shellescape [![GoDoc](https://godoc.org/github.com/alessio/shellescape?status.svg)](https://godoc.org/github.com/alessio/shellescape)
 Escape arbitrary strings for safe use as command line arguments.
-
 ## Contents of the package
 
 This package provides the `shellescape.Quote()` function that returns a
