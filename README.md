@@ -50,3 +50,6 @@ func main() {
 }
 ```
 _[See in Go Playground](https://play.golang.org/p/HJ_CXgSrmp)_
+
+## The escargs utility
+__escargs__ reads lines from the standard input and prints shell-escaped versions. Unlinke __xargs__, blank lines on the standard input are not discarded.
