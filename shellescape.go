@@ -15,8 +15,8 @@ func init() {
 	pattern = regexp.MustCompilePOSIX("[a-zA-Z0-9_^@%+=:,./-]")
 }
 
-// Quote replaces all occurrences in the string s of the
-// single quote character with an escaped version.
+// Return a shell-escaped version of the string s. The returned value is a
+// string that can safely be used as one token in a shell command line.
 func Quote(s string) string {
 	if len(s) == 0 {
 		return "''"
