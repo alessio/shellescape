@@ -35,3 +35,15 @@ func TestUnquotedString(t *testing.T) {
 	expected := `'no quotes'`
 	assertEqual(t, s, expected)
 }
+
+func TestSingleInvalid(t *testing.T) {
+	s := shellescape.Quote(`;`)
+	expected := `';'`
+	assertEqual(t, s, expected)
+}
+
+func TestAllInvalid(t *testing.T) {
+	s := shellescape.Quote(`;${}`)
+	expected := `';${}'`
+	assertEqual(t, s, expected)
+}
