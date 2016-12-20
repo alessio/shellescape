@@ -47,3 +47,9 @@ func TestAllInvalid(t *testing.T) {
 	expected := `';${}'`
 	assertEqual(t, s, expected)
 }
+
+func TestCleanString(t *testing.T) {
+	s := shellescape.Quote("foo.example.com")
+	expected := `foo.example.com`
+	assertEqual(t, s, expected)
+}
