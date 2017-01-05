@@ -1,6 +1,6 @@
 [![GoDoc](https://godoc.org/github.com/alessio/shellescape?status.svg)](https://godoc.org/github.com/alessio/shellescape) 
 [![Travis-CI Status](https://api.travis-ci.org/alessio/shellescape.png?branch=master)](http://travis-ci.org/#!/alessio/shellescape)
-[![Coverage](http://gocover.io/_badge/github.com/alessio/shellescape?0)](http://gocover.io/github.com/alessio/shellescape)
+[![Coverage](http://gocover.io/_badge/github.com/alessio/shellescape)](http://gocover.io/github.com/alessio/shellescape)
 # shellescape
 Escape arbitrary strings for safe use as command line arguments.
 ## Contents of the package
