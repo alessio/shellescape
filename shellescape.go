@@ -22,7 +22,7 @@ import (
 var pattern *regexp.Regexp
 
 func init() {
-	pattern = regexp.MustCompilePOSIX("[a-zA-Z0-9_^@%+=:,./-]")
+	pattern = regexp.MustCompile(`[^\w@%+=:,./-]`)
 }
 
 // Quote returns a shell-escaped version of the string s. The returned value
