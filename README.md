@@ -11,8 +11,8 @@ shell-escaped copy of a string. This functionality could be helpful
 in those cases where it is known that the output of a Go program will
 be appended to/used in the context of shell programs' command line arguments.
 
-This work was inspired by the Python original package [shellescape] 
-(https://pypi.python.org/pypi/shellescape).
+This work was inspired by the Python original package
+[shellescape](https://pypi.python.org/pypi/shellescape).
 
 ## Usage
 
