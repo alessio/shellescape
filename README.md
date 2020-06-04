@@ -33,7 +33,7 @@ func main() {
 _[See in Go Playground](https://play.golang.org/p/Wj2WoUfH_d)_
 
 Especially when creating pipeline of commands which might end up being
-executed by a shell interpreter, tt is particularly unsafe to not
+executed by a shell interpreter, it is particularly unsafe to not
 escape arguments.
 
 `shellescape.Quote()` comes in handy and to safely escape strings:
