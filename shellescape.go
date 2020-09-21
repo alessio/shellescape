@@ -37,3 +37,13 @@ func Quote(s string) string {
 
 	return s
 }
+
+// QuoteCommand returns a shell-escaped version of the slice of strings.
+// The returned value is a string that can safely be used as shell command arguments.
+func QuoteCommand(args []string) string {
+	var l []string
+	for _, s := range args {
+		l = append(l, Quote(s))
+	}
+	return strings.Join(l, " ")
+}
