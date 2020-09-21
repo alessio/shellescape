@@ -53,3 +53,9 @@ func TestCleanString(t *testing.T) {
 	expected := `foo.example.com`
 	assertEqual(t, s, expected)
 }
+
+func TestQuoteCommand(t *testing.T) {
+	s := shellescape.QuoteCommand([]string{"ls", "-l", "file with space"})
+	expected := `ls -l 'file with space'`
+	assertEqual(t, s, expected)
+}
