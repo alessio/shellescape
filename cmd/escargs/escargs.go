@@ -14,12 +14,14 @@ import (
 func main() {
 	firstScan := true
 	scanner := bufio.NewScanner(os.Stdin)
+
 	for scanner.Scan() {
 		if firstScan {
 			firstScan = false
 		} else {
 			fmt.Printf(" ")
 		}
+
 		fmt.Printf("%s", shellescape.Quote(scanner.Text()))
 	}
 }

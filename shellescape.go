@@ -31,8 +31,9 @@ func Quote(s string) string {
 	if len(s) == 0 {
 		return "''"
 	}
+
 	if pattern.MatchString(s) {
-		return "'" + strings.Replace(s, "'", "'\"'\"'", -1) + "'"
+		return "'" + strings.ReplaceAll(s, "'", "'\"'\"'") + "'"
 	}
 
 	return s
@@ -41,9 +42,11 @@ func Quote(s string) string {
 // QuoteCommand returns a shell-escaped version of the slice of strings.
 // The returned value is a string that can safely be used as shell command arguments.
 func QuoteCommand(args []string) string {
-	var l []string
-	for _, s := range args {
-		l = append(l, Quote(s))
+	l := make([]string, len(args))
+
+	for i, s := range args {
+		l[i] = Quote(s)
 	}
+
 	return strings.Join(l, " ")
 }
