@@ -1,6 +1,9 @@
 ![Build](https://github.com/alessio/shellescape/workflows/Build/badge.svg)
 [![GoDoc](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/alessio/shellescape?tab=overview)
+[![codecov](https://codecov.io/gh/alessio/shellescape/branch/master/graph/badge.svg)](https://codecov.io/gh/alessio/shellescape)
 [![Coverage](https://gocover.io/_badge/github.com/alessio/shellescape)](https://gocover.io/github.com/alessio/shellescape)
+[![Go Report Card](https://goreportcard.com/badge/github.com/alessio/shellescape)](https://goreportcard.com/report/github.com/alessio/shellescape)
+
 # shellescape
 Escape arbitrary strings for safe use as command line arguments.
 ## Contents of the package
