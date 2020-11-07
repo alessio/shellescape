@@ -1,5 +1,5 @@
+![Build](https://github.com/alessio/shellescape/workflows/Build/badge.svg)
 [![GoDoc](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/alessio/shellescape?tab=overview)
-[![Travis-CI Status](https://api.travis-ci.org/alessio/shellescape.png?branch=master)](http://travis-ci.org/#!/alessio/shellescape)
 [![Coverage](https://gocover.io/_badge/github.com/alessio/shellescape)](https://gocover.io/github.com/alessio/shellescape)
 # shellescape
 Escape arbitrary strings for safe use as command line arguments.
