@@ -14,23 +14,37 @@ import (
 )
 
 var (
-	flagDiscardBlankLines = flag.Bool("D", false, "ignore blank lines on the standard input.")
-	flagNull              = flag.Bool("0", false, "input items are terminated by a null character instead of by new line.")
+	discardBlankLines bool
+	nullSeparator     bool
+	argFile           string
 )
 
 func main() {
+	flag.BoolVar(&discardBlankLines, "D", false, "ignore blank lines on the input stream.")
+	flag.BoolVar(&nullSeparator, "0", false, "input items are terminated by a null character instead of by new line.")
+	flag.StringVar(&argFile, "a", "", "read arguments from file, not standard input.")
 	flag.Parse()
 
 	firstScan := true
 	scanner := bufio.NewScanner(os.Stdin)
 
-	if *flagNull {
+	if argFile != "" {
+		f, err := os.Open(argFile)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "escargs: %v\n", err)
+			os.Exit(1)
+		}
+
+		scanner = bufio.NewScanner(f)
+	}
+
+	if nullSeparator {
 		scanner.Split(splitNullTerminatedItems)
 	}
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		if *flagDiscardBlankLines && len(line) == 0 {
+		if discardBlankLines && len(line) == 0 {
 			continue
 		}
 
