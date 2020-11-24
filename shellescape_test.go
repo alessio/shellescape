@@ -59,3 +59,24 @@ func TestQuoteCommand(t *testing.T) {
 	expected := `ls -l 'file with space'`
 	assertEqual(t, s, expected)
 }
+
+func TestStripUnsafe(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{"all ASCII printable characters", args{`"printable!" characters '' 12321312"`}, `"printable!" characters '' 12321312"`},
+		{"some non printable characters", args{"print\u0081ble"}, "printble"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := shellescape.StripUnsafe(tt.args.s); got != tt.want {
+				t.Errorf("StripUnsafe() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

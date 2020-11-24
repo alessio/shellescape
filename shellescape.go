@@ -17,6 +17,7 @@ be appended to/used in the context of shell programs' command line arguments.
 import (
 	"regexp"
 	"strings"
+	"unicode"
 )
 
 var pattern *regexp.Regexp
@@ -49,4 +50,17 @@ func QuoteCommand(args []string) string {
 	}
 
 	return strings.Join(l, " ")
+}
+
+// StripUnsafe remove non-printable runes, e.g. control characters in
+// a string that is meant  for consumption by terminals that support
+// control characters.
+func StripUnsafe(s string) string {
+	return strings.Map(func(r rune) rune {
+		if unicode.IsPrint(r) {
+			return r
+		}
+
+		return -1
+	}, s)
 }
