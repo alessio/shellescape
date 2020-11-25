@@ -54,3 +54,14 @@ func ExampleQuoteCommand() {
 	// unsafe: /usr/bin/ls -lh filename with space
 	// safe: /usr/bin/ls -lh 'filename with space'
 }
+
+func ExampleStripUnsafe() {
+	safeString := `"printable!" #$%^characters '' 12321312"`
+	unsafeString := "these runes shall be removed: \u0000\u0081\u001f"
+
+	fmt.Println("safe:", shellescape.StripUnsafe(safeString))
+	fmt.Println("unsafe:", shellescape.StripUnsafe(unsafeString))
+	// Output:
+	// safe: "printable!" #$%^characters '' 12321312"
+	// unsafe: these runes shall be removed:
+}
