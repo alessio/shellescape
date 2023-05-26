@@ -34,7 +34,7 @@ func Quote(s string) string {
 	}
 
 	if pattern.MatchString(s) {
-		return "'" + strings.ReplaceAll(s, "'", "'\"'\"'") + "'"
+		return "'" + strings.ReplaceAll(s, "'", "'\\''") + "'"
 	}
 
 	return s
