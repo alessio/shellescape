@@ -8,7 +8,7 @@ import (
 
 func assertEqual(t *testing.T, s, expected string) {
 	if s != expected {
-		t.Errorf("%q (expected: %q)", s, expected)
+		t.Fatalf("%q (expected: %q)", s, expected)
 	}
 }
 
