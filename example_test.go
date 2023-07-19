@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/alessio/shellescape"
+	"github.com/google/shlex"
 )
 
 func ExampleQuote() {
@@ -40,7 +41,7 @@ func ExampleQuote() {
 	// safe[5] = /'
 }
 
-func ExampleQuoteCommand() {
+func ExampleQuoteCommand_simple() {
 	filename := "filename with space"
 	prog := "/usr/bin/ls"
 	args := "-lh"
@@ -53,6 +54,40 @@ func ExampleQuoteCommand() {
 	// Output:
 	// unsafe: /usr/bin/ls -lh filename with space
 	// safe: /usr/bin/ls -lh 'filename with space'
+}
+
+func ExampleQuoteCommand() {
+	filename := "myfile; rm -rf /"
+	unsafe := fmt.Sprintf("ls -l %s", filename)
+	command := fmt.Sprintf("ls -l %s", shellescape.Quote(filename))
+	splitCommand, _ := shlex.Split(command)
+
+	fmt.Println("unsafe:", unsafe)
+	fmt.Println("command:", command)
+	fmt.Println("splitCommand:", splitCommand)
+
+	remoteCommandUnsafe := fmt.Sprintf("ssh host.domain %s", command)
+	remoteCommand := fmt.Sprintf("ssh host.domain %s", shellescape.Quote(command))
+	splitRemoteCommand, _ := shlex.Split(remoteCommand)
+
+	fmt.Println("remoteCommandUnsafe:", remoteCommandUnsafe)
+	fmt.Println("remoteCommand:", remoteCommand)
+	fmt.Println("splitRemoteCommand:", splitRemoteCommand)
+
+	lastSplit, _ := shlex.Split(splitRemoteCommand[2])
+	fmt.Println("lastSplit[0]:", lastSplit[0])
+	fmt.Println("lastSplit[1]:", lastSplit[1])
+	fmt.Println("lastSplit[2]:", lastSplit[2])
+
+	// unsafe: ls -l myfile; rm -rf /
+	// command: ls -l 'myfile; rm -rf /'
+	// splitCommand: [ls -l myfile; rm -rf /]
+	// remoteCommandUnsafe: ssh host.domain ls -l 'myfile; rm -rf /'
+	// remoteCommand: ssh host.domain 'ls -l '"'"'myfile; rm -rf /'"'"''
+	// splitRemoteCommand: [ssh host.domain ls -l 'myfile; rm -rf /']
+	// lastSplit[0]: ls
+	// lastSplit[1]: -l
+	// lastSplit[2]: myfile; rm -rf /
 }
 
 func ExampleStripUnsafe() {
