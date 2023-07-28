@@ -1,15 +1,25 @@
+
 #!/usr/bin/make -f
 
 VERSION := $(shell git describe)
 
-all: clean escargs
+all: build
 
-escargs:
-	go build \
+build:
+	go build -a -v
+
+install:
+	go install ./cmd/escargs
+
+escargs: build
+	go build -v \
           -ldflags="-X 'main.version=$(VERSION)'" \
           ./cmd/escargs
 
 clean:
-	rm -rf escargs
+	rm -rfv escargs
 
-.PHONY: clean
+uninstall:
+	rm -v $(shell go env GOPATH)/bin/escargs
+
+.PHONY: build clean install uninstall
