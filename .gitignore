@@ -28,3 +28,5 @@ _testmain.go
 escargs
 
 config.hcl
+
+.DS_Store
