@@ -11,7 +11,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/alessio/shellescape"
+	"al.essio.dev/pkg/shellescape"
 )
 
 var (
@@ -113,5 +113,5 @@ Options:`
 
 func outputVersion() {
 	fmt.Fprintf(os.Stderr, "escargs version %s\n", version)
-	fmt.Fprintln(os.Stderr, "Copyright (C) 2020-2023 Alessio Treglia <alessio@debian.org>")
+	fmt.Fprintln(os.Stderr, "Copyright (C) 2020-2024 Alessio Treglia <alessio@debian.org>")
 }

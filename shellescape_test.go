@@ -3,7 +3,7 @@ package shellescape_test
 import (
 	"testing"
 
-	"github.com/alessio/shellescape"
+	"al.essio.dev/pkg/shellescape"
 )
 
 func assertEqual(t *testing.T, s, expected string) {
