@@ -48,7 +48,7 @@ import (
         "fmt"
         "os"
 
-        "gopkg.in/alessio/shellescape.v1"
+        "al.essio.dev/pkg/shellescape"
 )
 
 func main() {
