@@ -79,6 +79,7 @@ func ExampleQuoteCommand() {
 	fmt.Println("lastSplit[1]:", lastSplit[1])
 	fmt.Println("lastSplit[2]:", lastSplit[2])
 
+	// Output:
 	// unsafe: ls -l myfile; rm -rf /
 	// command: ls -l 'myfile; rm -rf /'
 	// splitCommand: [ls -l myfile; rm -rf /]
