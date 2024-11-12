@@ -41,10 +41,11 @@ issues:
     - text: "ST1003:"
       linters:
         - stylecheck
+    - path: "_test.go"
+      linters:
+        - wsl
 
 linters-settings:
   dogsled:
     max-blank-identifiers: 3
 
-run:
-  tests: false
