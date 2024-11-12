@@ -10,11 +10,11 @@ jobs:
   test:
     strategy:
       matrix:
-        go-version: [1.20.x, 1.21.x, 1.22.x]
+        go-version: [1.20.x, 1.21.x, 1.22.x, 1.23.x]
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.2.2
     - uses: actions/setup-go@v5
       with:
         go-version: ${{ matrix.go-version }}
@@ -22,7 +22,7 @@ jobs:
       run: go build -v ./...
     - name: Test
       run: go test -race -cover -covermode=atomic -coverprofile=coverage.out ./...
-    - uses: codecov/codecov-action@v1
+    - uses: codecov/codecov-action@v4.6.0
       with:
         file: ./coverage.out
         verbose: true
