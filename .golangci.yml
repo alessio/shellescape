@@ -8,6 +8,7 @@ linters:
     - bodyclose
     - copyloopvar
     - dogsled
+    - gci
     - goconst
     - gocritic
     - gofmt
@@ -49,4 +50,12 @@ issues:
 linters-settings:
   dogsled:
     max-blank-identifiers: 3
-
+  # define the import orders
+  gci:
+    sections:
+      # Standard section: captures all standard packages.
+      - standard
+      # Default section: catchall that is not standard or custom
+      - default
+      # linters that related to local tool, so they should be separated
+      - localmodule
