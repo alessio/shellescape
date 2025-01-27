@@ -22,7 +22,7 @@ jobs:
       run: go build -v ./...
     - name: Test
       run: go test -race -cover -covermode=atomic -coverprofile=coverage.out ./...
-    - uses: codecov/codecov-action@v4.6.0
+    - uses: codecov/codecov-action@v5.3.1
       with:
         file: ./coverage.out
         verbose: true
