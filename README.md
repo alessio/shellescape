@@ -1,3 +1,5 @@
+# shellescape
+
 ![Build](https://github.com/alessio/shellescape/workflows/Build/badge.svg)
 [![GoDoc](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/alessio/shellescape?tab=overview)
 [![sourcegraph](https://sourcegraph.com/github.com/alessio/shellescape/-/badge.svg)](https://sourcegraph.com/github.com/alessio/shellescape)
@@ -5,8 +7,8 @@
 [![Coverage](https://gocover.io/_badge/github.com/alessio/shellescape)](https://gocover.io/github.com/alessio/shellescape)
 [![Go Report Card](https://goreportcard.com/badge/github.com/alessio/shellescape)](https://goreportcard.com/report/github.com/alessio/shellescape)
 
-# shellescape
 Escape arbitrary strings for safe use as command line arguments.
+
 ## Contents of the package
 
 This package provides the `shellescape.Quote()` function that returns a
@@ -32,6 +34,7 @@ import (
 func main() {
 	fmt.Printf("ls -l %s\n", os.Args[1])
 }
+
 ```
 _[See in Go Playground](https://play.golang.org/p/Wj2WoUfH_d)_
 
@@ -58,4 +61,5 @@ func main() {
 _[See in Go Playground](https://go.dev/play/p/GeguukpSUTk)_
 
 ## The escargs utility
+
 __escargs__ reads lines from the standard input and prints shell-escaped versions. Unlike __xargs__, blank lines on the standard input are not discarded.
