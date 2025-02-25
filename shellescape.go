@@ -15,6 +15,7 @@ be appended to/used in the context of shell programs' command line arguments.
 */
 
 import (
+	"bytes"
 	"regexp"
 	"strings"
 	"unicode"
@@ -63,4 +64,25 @@ func StripUnsafe(s string) string {
 
 		return -1
 	}, s)
+}
+
+// ScanTokens is a split function for a bufio.Scanner that returns each word of text, stripped
+// of amy trailing end-of-text empty byte.
+func ScanTokens(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	// Return nothing if at end-of-file and no data passed.
+	if atEOF && len(data) == 0 {
+		return 0, nil, nil
+	}
+
+	// Find the index of the input of a null character.
+	if i := bytes.IndexByte(data, '\x00'); i >= 0 {
+		return i + 1, data[0:i], nil
+	}
+	// If we're at EOF, we have a final, non-terminated line. Return it.
+	if atEOF {
+		return len(data), data, nil
+	}
+
+	// Request more data.
+	return 0, nil, nil
 }

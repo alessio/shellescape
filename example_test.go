@@ -1,6 +1,7 @@
 package shellescape_test
 
 import (
+	"bufio"
 	"fmt"
 	"strings"
 
@@ -101,4 +102,19 @@ func ExampleStripUnsafe() {
 	// Output:
 	// safe: "printable!" #$%^characters '' 12321312"
 	// unsafe: these runes shall be removed:
+}
+
+func ExampleScanTokens() {
+	words := "'tis\x00but\x00a\x00scratch!\x00"
+	scanner := bufio.NewScanner(strings.NewReader(words))
+
+	scanner.Split(shellescape.ScanTokens)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+	// Output:
+	// 'tis
+	// but
+	// a
+	// scratch!
 }
