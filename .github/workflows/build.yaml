@@ -31,8 +31,7 @@ jobs:
       with:
         go-version: 'stable'
     - name: Coverage
-      run: go test -race -cover -covermode=atomic -coverprofile=coverage.out ./...
+      run: go test -race -cover -covermode=atomic -coverprofile=coverage.txt ./...
     - uses: codecov/codecov-action@v5
       with:
-        file: ./coverage.out
-        verbose: true
+        token: ${{ secrets.CODECOV_TOKEN }}
