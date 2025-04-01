@@ -35,6 +35,7 @@ func main() {
 }
 
 ```
+
 _[See in Go Playground](https://play.golang.org/p/Wj2WoUfH_d)_
 
 Especially when creating pipeline of commands which might end up being
@@ -57,6 +58,7 @@ func main() {
         fmt.Printf("ls -l %s\n", shellescape.Quote(os.Args[1]))
 }
 ```
+
 _[See in Go Playground](https://go.dev/play/p/GeguukpSUTk)_
 
 ## The escargs utility
