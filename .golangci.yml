@@ -1,61 +1,68 @@
-# run:
-#   # timeout for analysis, e.g. 30s, 5m, default is 1m
-#   timeout: 5m
-
+version: "2"
 linters:
-  disable-all: true
+  default: none
   enable:
     - bodyclose
     - copyloopvar
     - dogsled
-    - gci
     - goconst
     - gocritic
-    - gofmt
-    - goimports
     - gosec
-    - gosimple
     - govet
     - ineffassign
     - misspell
     - prealloc
     - revive
     - staticcheck
-    - stylecheck
-    - typecheck
     - thelper
     - unconvert
     - unparam
     - unused
     - wsl
-
-issues:
-  exclude-rules:
-    - text: "Use of weak random number generator"
-      linters:
-        - gosec
-    - text: "comment on exported var"
-      linters:
-        - golint
-    - text: "don't use an underscore in package name"
-      linters:
-        - golint
-    - text: "ST1003:"
-      linters:
-        - stylecheck
-    - path: "_test.go"
-      linters:
-        - wsl
-
-linters-settings:
-  dogsled:
-    max-blank-identifiers: 3
-  # define the import orders
-  gci:
-    sections:
-      # Standard section: captures all standard packages.
-      - standard
-      # Default section: catchall that is not standard or custom
-      - default
-      # linters that related to local tool, so they should be separated
-      - localmodule
+  settings:
+    dogsled:
+      max-blank-identifiers: 3
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - gosec
+        text: Use of weak random number generator
+      - linters:
+          - golint
+        text: comment on exported var
+      - linters:
+          - golint
+        text: don't use an underscore in package name
+      - linters:
+          - staticcheck
+        text: 'ST1003:'
+      - linters:
+          - wsl
+        path: _test.go
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - goimports
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - localmodule
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

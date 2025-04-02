@@ -5,21 +5,30 @@ VERSION := $(shell git describe)
 
 all: build
 
-build:
+build-stamp:
 	go build -a -v
+	touch $@
+build: build-stamp
 
-install:
-	go install ./cmd/escargs
+install-stamp: build
+	go install -v \
+            -ldflags="X 'main.version=$(VERSION)'" \
+            ./cmd/escargs
+	touch $@
+install: install-stamp
 
 escargs: build
 	go build -v \
-          -ldflags="-X 'main.version=$(VERSION)'" \
-          ./cmd/escargs
+            -ldflags="-X 'main.version=$(VERSION)'" \
+            ./cmd/escargs
 
 clean:
-	rm -rfv escargs
+	rm -f escargs
+
+distclean: clean
+	rm -f build-stamp install-stamp
 
 uninstall:
-	rm -v $(shell go env GOPATH)/bin/escargs
+	rm -fv $(shell go env GOPATH)/bin/escargs
 
-.PHONY: build clean install uninstall
+.PHONY: clean distclean install uninstall 
