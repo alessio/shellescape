@@ -1,12 +1,16 @@
 package shellescape_test
 
 import (
+	"bufio"
+	"bytes"
 	"testing"
 
-	"github.com/alessio/shellescape"
+	"al.essio.dev/pkg/shellescape"
 )
 
 func assertEqual(t *testing.T, s, expected string) {
+	t.Helper()
+
 	if s != expected {
 		t.Fatalf("%q (expected: %q)", s, expected)
 	}
@@ -78,5 +82,24 @@ func TestStripUnsafe(t *testing.T) {
 				t.Errorf("StripUnsafe() = %v, want %v", got, tt.want)
 			}
 		})
+	}
+}
+
+func TestScanTokens(t *testing.T) {
+	data := [][]byte{[]byte("foo"), []byte("bar"), []byte("baz")}
+	buf := bytes.NewBuffer(bytes.Join(data, []byte{'\x00'}))
+	want := []string{"foo", "bar", "baz"}
+
+	scanner := bufio.NewScanner(buf)
+	scanner.Split(shellescape.ScanTokens)
+
+	for i := 0; scanner.Scan(); i++ {
+		if got := scanner.Text(); got != want[i] {
+			t.Errorf("scanner.Text() = %v, want %v", got, want[i])
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		t.Errorf("scanner.Err() = %v, want nil", err)
 	}
 }

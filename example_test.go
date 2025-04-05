@@ -1,11 +1,13 @@
 package shellescape_test
 
 import (
+	"bufio"
 	"fmt"
 	"strings"
 
-	"github.com/alessio/shellescape"
 	"github.com/google/shlex"
+
+	"al.essio.dev/pkg/shellescape"
 )
 
 func ExampleQuote() {
@@ -79,6 +81,7 @@ func ExampleQuoteCommand() {
 	fmt.Println("lastSplit[1]:", lastSplit[1])
 	fmt.Println("lastSplit[2]:", lastSplit[2])
 
+	// Output:
 	// unsafe: ls -l myfile; rm -rf /
 	// command: ls -l 'myfile; rm -rf /'
 	// splitCommand: [ls -l myfile; rm -rf /]
@@ -99,4 +102,19 @@ func ExampleStripUnsafe() {
 	// Output:
 	// safe: "printable!" #$%^characters '' 12321312"
 	// unsafe: these runes shall be removed:
+}
+
+func ExampleScanTokens() {
+	words := "'tis\x00but\x00a\x00scratch!\x00"
+	scanner := bufio.NewScanner(strings.NewReader(words))
+
+	scanner.Split(shellescape.ScanTokens)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+	// Output:
+	// 'tis
+	// but
+	// a
+	// scratch!
 }

@@ -1,17 +1,16 @@
 // escargs reads lines from the standard input and prints shell-escaped
-// versions. Unlinke xargs, blank lines on the standard input are not
+// versions. Unlike xargs, blank lines on the standard input are not
 // discarded.
 package main
 
 import (
 	"bufio"
-	"bytes"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 
-	"github.com/alessio/shellescape"
+	"al.essio.dev/pkg/shellescape"
 )
 
 var (
@@ -63,7 +62,7 @@ func main() {
 	}
 
 	if nullSeparator {
-		scanner.Split(splitNullTerminatedItems)
+		scanner.Split(shellescape.ScanTokens)
 	}
 
 	for scanner.Scan() {
@@ -82,25 +81,6 @@ func main() {
 	}
 }
 
-func splitNullTerminatedItems(data []byte, atEOF bool) (advance int, token []byte, err error) {
-	// Return nothing if at end of file and no data passed.
-	if atEOF && len(data) == 0 {
-		return 0, nil, nil
-	}
-
-	// Find the index of the input of a null character.
-	if i := bytes.IndexByte(data, '\x00'); i >= 0 {
-		return i + 1, data[0:i], nil
-	}
-	// If we're at EOF, we have a final, non-terminated line. Return it.
-	if atEOF {
-		return len(data), data, nil
-	}
-
-	// Request more data.
-	return 0, nil, nil
-}
-
 func usage() {
 	usageString := `Usage: escargs [-0ad]
 Escape arbitrary strings for safe use as command line arguments.
@@ -113,5 +93,5 @@ Options:`
 
 func outputVersion() {
 	fmt.Fprintf(os.Stderr, "escargs version %s\n", version)
-	fmt.Fprintln(os.Stderr, "Copyright (C) 2020-2023 Alessio Treglia <alessio@debian.org>")
+	fmt.Fprintln(os.Stderr, "Copyright (C) 2020-2024 Alessio Treglia <alessio@debian.org>")
 }

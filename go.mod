@@ -1,4 +1,4 @@
-module github.com/alessio/shellescape
+module al.essio.dev/pkg/shellescape
 
 go 1.18
 
