@@ -1,4 +1,7 @@
 name: golangci-lint
+permissions:
+  contents: read
+  pull-requests: write
 on:
   push:
     tags:
