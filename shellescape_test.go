@@ -46,6 +46,12 @@ func TestSingleInvalid(t *testing.T) {
 	assertEqual(t, s, expected)
 }
 
+func TestBacktick(t *testing.T) {
+	s := shellescape.Quote("`echo hello`")
+	expected := "'`echo hello`'"
+	assertEqual(t, s, expected)
+}
+
 func TestAllInvalid(t *testing.T) {
 	s := shellescape.Quote(`;${}`)
 	expected := `';${}'`
