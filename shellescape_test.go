@@ -208,9 +208,10 @@ func BenchmarkScanTokensLargeData(b *testing.B) {
 	for i := range data {
 		data[i] = []byte("foo")
 	}
-	buf := bytes.NewBuffer(bytes.Join(data, []byte{'\x00'}))
+	joined := bytes.Join(data, []byte{'\x00'})
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		buf := bytes.NewBuffer(joined)
 		scanner := bufio.NewScanner(buf)
 		scanner.Split(shellescape.ScanTokens)
 		for scanner.Scan() {
