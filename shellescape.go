@@ -66,6 +66,17 @@ func StripUnsafe(s string) string {
 	}, s)
 }
 
+// StripSpaces removes whitespace characters (e.g., tabs, newlines).
+func StripSpaces(s string) string {
+	return strings.Map(func(r rune) rune {
+		if !unicode.IsSpace(r) {
+			return r
+		}
+
+		return -1
+	}, s)
+}
+
 // ScanTokens is a split function for a bufio.Scanner that returns each word of text, stripped
 // of amy trailing end-of-text empty byte.
 func ScanTokens(data []byte, atEOF bool) (advance int, token []byte, err error) {
