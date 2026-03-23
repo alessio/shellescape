@@ -107,8 +107,7 @@ func TestStripSpaces(t *testing.T) {
 		{"leading and trailing spaces", args{"   print able   "}, "printable"},
 		{"only spaces", args{"   "}, ""},
 	}
-	for _, tt_ := range tests {
-		tt := tt_
+	for _, tt := range tests {
 		t.Run(tt.name, func(t2 *testing.T) {
 			t2.Parallel()
 			got := shellescape.StripSpaces(tt.args.s)
