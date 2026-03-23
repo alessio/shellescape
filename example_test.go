@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	"al.essio.dev/pkg/shellescape"
-
 	"github.com/google/shlex"
+
+	"al.essio.dev/pkg/shellescape"
 )
 
 func ExampleQuote() {
