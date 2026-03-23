@@ -26,7 +26,7 @@ jobs:
     - name: Test
       run: go test -race ./...
     - name: Benchmark
-      run: go test -bench=. -benchmem shellescape_test.go
+      run: go test -run=^$ -bench=. -benchmem ./...
 
   coverage:
     runs-on: ubuntu-latest
