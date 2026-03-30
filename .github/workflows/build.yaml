@@ -37,6 +37,6 @@ jobs:
         go-version: 'stable'
     - name: Coverage
       run: go test -race -cover -covermode=atomic -coverprofile=coverage.txt ./...
-    - uses: codecov/codecov-action@v5
+    - uses: codecov/codecov-action@v6
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
