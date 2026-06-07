@@ -77,7 +77,8 @@ func main() {
 			fmt.Printf(" ")
 		}
 
-		fmt.Printf("%s", shellescape.Quote(line))
+		safeLine := shellescape.StripUnsafe(line)
+		fmt.Printf("%s", shellescape.Quote(safeLine))
 	}
 }
 
