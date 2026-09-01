@@ -31,4 +31,15 @@ distclean: clean
 uninstall:
 	rm -fv $(shell go env GOPATH)/bin/escargs
 
-.PHONY: clean distclean install uninstall 
+FUZZTIME ?= 30s
+FUZZTARGETS := FuzzQuote FuzzQuoteCommand FuzzStripUnsafe FuzzStripSpaces FuzzScanTokens
+
+# go test runs at most one fuzz target per invocation, so iterate over them.
+# Failing inputs are written to testdata/fuzz/<target>/ and must be committed.
+fuzz:
+	@for t in $(FUZZTARGETS); do \
+	    echo "=== $$t ==="; \
+	    go test -run '^'"$$t"'$$' -fuzz '^'"$$t"'$$' -fuzztime=$(FUZZTIME) . || exit 1; \
+	done
+
+.PHONY: clean distclean fuzz install uninstall 

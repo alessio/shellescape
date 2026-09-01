@@ -104,6 +104,15 @@ func ExampleStripUnsafe() {
 	// unsafe: these runes shall be removed:
 }
 
+func ExampleStripSpaces() {
+	s := "   Hello, World    !"
+	fmt.Println("Original string:", s)
+	fmt.Println("String with spaces stripped:", shellescape.StripSpaces(s))
+	// Output:
+	// Original string:    Hello, World    !
+	// String with spaces stripped: Hello,World!
+}
+
 func ExampleScanTokens() {
 	words := "'tis\x00but\x00a\x00scratch!\x00"
 	scanner := bufio.NewScanner(strings.NewReader(words))
@@ -117,4 +126,14 @@ func ExampleScanTokens() {
 	// but
 	// a
 	// scratch!
+}
+
+func ExampleStripSpaces_multipleSpaces() {
+	s := "Hello,   World  !"
+	fmt.Println("Original string:", s)
+	fmt.Println("String with spaces stripped:", shellescape.StripSpaces(s))
+	// Output:
+	// Original string: Hello,   World  !
+	// String with spaces stripped: Hello,World!
+	//
 }

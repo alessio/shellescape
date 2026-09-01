@@ -15,12 +15,12 @@ name: Codacy Security Scan
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "master" ]
+    branches: [ "main" ]
   schedule:
-    - cron: '34 4 * * 2'
+    - cron: '44 16 * * 2'
 
 permissions:
   contents: read
@@ -35,15 +35,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v7
 
       # Execute Codacy Analysis CLI and generate a SARIF output with the security issues identified during the analysis
-      - name: Codacy Analysis CLI
+      - name: Run Codacy Analysis CLI
         uses: codacy/codacy-analysis-cli-action@v4
         with:
           # Check https://github.com/codacy/codacy-analysis-cli#project-token to get your project token from your Codacy repository
           # You can also omit the token and run the tools that support default configurations
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           verbose: true
           output: results.sarif
           format: sarif
@@ -53,8 +54,21 @@ jobs:
           # This will handover control about PR rejection to the GitHub side
           max-allowed-issues: 2147483647
 
+      # Split the SARIF file into multiple files (one per run) to comply with CodeQL requirements
+      - name: Split SARIF results
+        run: |
+          if [ -f results.sarif ]; then
+            mkdir -p sarif-parts
+            jq -c '.runs[]' results.sarif | while read -r run; do
+              tool_name=$(echo "$run" | jq -r '.tool.driver.name // "unknown" | sub(" "; "_"; "g") | ascii_downcase')
+              echo "$run" | jq --arg cat "codacy-$tool_name" '.automationDetails.id = $cat' | \
+              jq --slurp '{"$schema":"https://json.schemastore.org/sarif-2.1.0-rtm.5.json","version":"2.1.0","runs":.}' > "sarif-parts/${tool_name}.sarif"
+            done
+            ls -l sarif-parts
+          fi
+
       # Upload the SARIF file generated in the previous step
       - name: Upload SARIF results file
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4.37.9
         with:
-          sarif_file: results.sarif
+          sarif_file: sarif-parts
