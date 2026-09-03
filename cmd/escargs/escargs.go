@@ -7,6 +7,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 
@@ -49,8 +50,7 @@ func main() {
 		return
 	}
 
-	firstScan := true
-	scanner := bufio.NewScanner(os.Stdin)
+	var input io.Reader = os.Stdin
 
 	if argFile != "" {
 		f, err := os.Open(argFile)
@@ -58,8 +58,19 @@ func main() {
 			log.Fatal(err)
 		}
 
-		scanner = bufio.NewScanner(f)
+		input = f
 	}
+
+	if err := escape(os.Stdout, input); err != nil {
+		log.Fatal(err)
+	}
+}
+
+// escape writes the shell-escaped items read from r to w, separated by
+// spaces.
+func escape(w io.Writer, r io.Reader) error {
+	firstScan := true
+	scanner := bufio.NewScanner(r)
 
 	if nullSeparator {
 		scanner.Split(shellescape.ScanTokens)
@@ -74,11 +85,14 @@ func main() {
 		if firstScan {
 			firstScan = false
 		} else {
-			fmt.Printf(" ")
+			_, _ = fmt.Fprint(w, " ")
 		}
 
-		fmt.Printf("%s", shellescape.Quote(line))
+		_, _ = fmt.Fprint(w, shellescape.Quote(line))
 	}
+
+	// A scan error stops the loop early and truncates the output.
+	return scanner.Err()
 }
 
 func usage() {
